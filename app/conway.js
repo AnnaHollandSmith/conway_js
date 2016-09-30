@@ -10,6 +10,9 @@ var Cell = function(x,y) {
 Board.prototype = {
   addCell: function(cell) {
     this.cells[getCellRepresentation(cell.x,cell.y)] = cell;
+  },
+  getCellAt: function(x,y) {
+    return this.cells[getCellRepresentation(x,y)];
   }
 };
 
