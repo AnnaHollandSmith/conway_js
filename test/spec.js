@@ -22,4 +22,12 @@ describe('Conways game of life', function() {
       expect(board.getCellAt(1,1)).toEqual(cell);
     });
   });
+
+  describe('getAliveNeighbours', function() {
+    it('returns 0 when there are no alive neighbours', function() {
+      var neighbourCell = new Cell(1,2,true);
+      board.addCell(neighbourCell);
+      expect(board.getAliveNeighbours(cell)).toEqual(0);
+    });
+  });
 });

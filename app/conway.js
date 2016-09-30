@@ -13,6 +13,9 @@ Board.prototype = {
   },
   getCellAt: function(x,y) {
     return this.cells[getCellRepresentation(x,y)];
+  },
+  getAliveNeighbours: function(cell) {
+    return 0;
   }
 };
 
