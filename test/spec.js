@@ -57,4 +57,72 @@ describe('Conways game of life', function() {
     expect(board.getAliveNeighbours(cell)).toEqual(1);
     });
   });
+
+    describe('calculateNextState', function() {
+      it('dies if there are less than 2 living neighbors', function() {
+        board.addCell(new Cell(0, 0, true));
+
+        expect(board.calculateNextState(cell).isAlive()).toBe(false);
+      });
+      it('dies if there are more than 3 living neighbors', function() {
+        board.addCell(new Cell(0, 1, true));
+        board.addCell(new Cell(0, 2, true));
+        board.addCell(new Cell(0, 0, true));
+        board.addCell(new Cell(1, 2, true));
+
+        expect(board.calculateNextState(cell).isAlive()).toBe(false);
+      });
+      it('lives if there are 2 or 3 living neighbors', function() {
+        board.addCell(new Cell(0, 0, true));
+        board.addCell(new Cell(0, 1, true));
+
+        expect(board.calculateNextState(cell).isAlive()).toBe(true);
+      });
+      it('comes back to live if there are exactly 3 living neighbors ', function() {
+        board.addCell(new Cell(0, 0, true));
+        board.addCell(new Cell(0, 1, true));
+        board.addCell(new Cell(0, 2, true));
+        cell.alive = false;
+
+        expect(board.calculateNextState(cell).isAlive()).toBe(true);
+      });
+      it('does not come back to live if there are exactly 2 living neighbors ', function() {
+        board.addCell(new Cell(0, 0, true));
+        board.addCell(new Cell(0, 1, true));
+        cell.alive = false;
+        expect(board.calculateNextState(cell).isAlive()).toBe(false);
+      });
+    });
+
+  describe('step', function() {
+    it('calculates the new state for all dying cells', function() {
+      board.addCell(new Cell(0, 0, true));
+      board.step();
+
+      expect(board.getCellAt(0, 0).isAlive()).toBe(false);
+      expect(board.getCellAt(1, 1).isAlive()).toBe(false);
+    });
+    it('calculates the new state for all living cells', function() {
+      board.addCell(new Cell(0, 0, true));
+      board.addCell(new Cell(1, 2, true));
+      board.step();
+      expect(board.getCellAt(0, 0).isAlive()).toBe(false);
+      expect(board.getCellAt(1, 1).isAlive()).toBe(true);
+    });
+    it('calculates the new state correctly for many cells', function() {
+      board.addCell(new Cell(0, 1, true));
+      board.addCell(new Cell(0, 2, true));
+      board.addCell(new Cell(0, 0, false));
+      board.addCell(new Cell(2, 1, true));
+      board.addCell(new Cell(1, 0, true));
+      board.addCell(new Cell(2, 2, true));
+      board.addCell(new Cell(1, 2, false));
+      board.addCell(new Cell(2, 0, false));
+      board.step();
+
+      expect(board.getCellAt(1, 1).isAlive()).toBe(false);
+      expect(board.getCellAt(0, 1).isAlive()).toBe(true);
+      expect(board.getCellAt(2, 2).isAlive()).toBe(true);
+    });
+  });
 });

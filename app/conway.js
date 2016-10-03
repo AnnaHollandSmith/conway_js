@@ -29,15 +29,34 @@ Board.prototype = {
      return aliveCells;
    },
    calculateNextState: function(cell) {
-     var tempCell = new Cell(cell.x, cell.y, cell.alive);
-     var livingNeighbours = this.getAliveNeighbours(cell);
-     if(livingNeighbours === 2 || livingNeighbours === 3) {
-       tempCell.alive = true;
+   var tempCell = new Cell(cell.x, cell.y, cell.alive);
+   var livingNeighbours = this.getAliveNeighbours(cell);
+
+   if(cell.alive) {
+     if(livingNeighbours == 2 || livingNeighbours == 3) {
+      tempCell.alive = true;
      } else {
-       tempCell.alive = false;
+      tempCell.alive = false;
      }
-     return tempCell;
+   } else {
+    if(livingNeighbours == 3) {
+      tempCell.alive = true;
     }
+   }
+   return tempCell;
+ },
+ step: function() {
+  var cells = this.cells;
+  var tempBoard = {};
+
+  for(var c in this.cells) {
+    var cell = this.cells[c];
+    var newCell = this.calculateNextState(cell);
+    tempBoard[c] = newCell;
+  }
+
+  this.cells = tempBoard;
+}
 };
 
 var Cell = function (x, y, alive) {
